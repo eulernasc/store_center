@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap');
+:root {
+  /* Overlay layers */
+  --z-overlay: 400;
+  --z-spotlight: 1000; /* Tutorial spotlights/guided help */
+  /* System layers */
+  --z-critical: 2000; /* Critical system notifications */
+  /* spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+}
+:root {
+  --background:#f8f8f6; --foreground:#141516;
+  --surface:#f2f2ef; --surface-foreground:#141516;
+  --sidebar:#111213; --sidebar-foreground:#f5f5f2;
+  --card:#ffffff; --card-foreground:#141516;
+  --popup:#ffffff; --popup-foreground:#141516;
+  --primary:#fa6c16; --primary-foreground:#ffffff;
+  --secondary:#efefeb; --secondary-foreground:#202020;
+  --accent:#fff0e5; --accent-foreground:#c4510b;
+  --muted:#f1f1ee; --muted-foreground:#80817f;
+  --success:#078966; --success-foreground:#ffffff;
+  --error:#d04746; --error-foreground:#ffffff;
+  --warning:#de8d12; --warning-foreground:#ffffff;
+  --info:#385aa2; --info-foreground:#ffffff; --info-hover:#304e91; --info-active:#294781;
+  --border:#e7e7e2;
+  --font-family-base:'DM Sans',system-ui,sans-serif;
+  --font-family-display:'Bricolage Grotesque',system-ui,sans-serif;
+  --font-family-monospace:ui-monospace,SFMono-Regular,Consolas,monospace;
+  --font-family-cursive:cursive;
+  --shadow:0 4px 18px rgba(22,21,18,.035);
+  --shadow-md:0 10px 30px rgba(22,21,18,.075);
+  --shadow-lg:0 20px 60px rgba(22,21,18,.14);
+  --shadow-focus:0 0 0 3px rgba(250,108,22,.17);
+  --radius-sm:7px; --radius:11px; --radius-md:15px; --radius-lg:21px; --radius-full:999px;
+  --animation-duration-fast:120ms; --animation-duration-normal:220ms; --animation-duration-slow:420ms;
+  --chart-color-1:#fa6c16; --chart-color-2:#171818; --chart-color-3:#f6b27f; --chart-color-4:#c9ccc7; --chart-color-5:#0e8e69;
+}
+.dark {}
+
+*{box-sizing:border-box}body{margin:0;font-family:var(--font-family-base);}
