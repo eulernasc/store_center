@@ -98,3 +98,34 @@
 .comboMenu button{flex-shrink:0}
 .body{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .backdrop{overscroll-behavior:none}
+
+/* Seleção obrigatória de marca ao cadastrar um modelo novo. */
+.modelBrandBackdrop{position:absolute;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(8,24,52,.62);backdrop-filter:blur(3px);overscroll-behavior:contain}
+.modelBrandDialog{width:min(510px,100%);max-height:min(610px,90%);display:flex;flex-direction:column;min-height:0;overflow:hidden;border:1px solid var(--border,#d7e5f5);border-radius:17px;background:var(--card,#fff);color:var(--foreground,#172b48);box-shadow:0 20px 60px rgba(7,22,48,.29)}
+.modelBrandHeading{display:flex;justify-content:space-between;gap:13px;align-items:flex-start;padding:22px 22px 17px;border-bottom:1px solid var(--border)}
+.modelBrandHeading h3{margin:6px 0 9px;font-size:19px;line-height:1.25;letter-spacing:-.4px}
+.modelBrandHeading p{font-size:12px;line-height:1.55;font-weight:450;color:var(--muted-foreground,#6d7e98);margin:0}
+.modelBrandHeading p strong{color:var(--foreground)}
+.modelBrandEyebrow{font-size:10px;font-weight:850;letter-spacing:1.2px;color:#2574e2}
+.modelBrandContent{padding:18px 22px;overflow:auto;min-height:0;flex:1;overscroll-behavior:contain}
+.modelBrandContent>.field{margin-bottom:7px}
+.modelBrandSearch{display:flex;align-items:center;gap:9px;border:1px solid var(--border);border-radius:10px;padding:0 12px;background:var(--card);color:var(--muted-foreground)}
+.modelBrandSearch:focus-within{border-color:#2b78ec;box-shadow:0 0 0 3px rgba(39,116,235,.12)}
+.modelBrandSearch input{width:100%;flex:1;min-width:0;background:transparent;border:0;outline:0!important;min-height:45px;padding:10px 0;color:var(--foreground);font-size:13px}
+.modelBrandList{display:flex;flex-direction:column;gap:5px;overflow:auto;max-height:260px;min-height:75px;margin-top:12px;padding:3px 2px 7px;overscroll-behavior:contain;scrollbar-width:thin}
+.modelBrandList button{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:42px;flex-shrink:0;padding:10px 13px;border:1px solid transparent;border-radius:10px;background:var(--secondary,#f2f6fd);color:var(--foreground);font-weight:700;font-size:12px;text-align:left;cursor:pointer}
+.modelBrandList button:hover{border-color:#9dc2fa;background:var(--accent,#e8f1ff)}
+.modelBrandList .modelBrandSelected{color:#1b64ca;background:var(--accent,#e8f1ff);border-color:#327ff0}
+.modelBrandList p{font-size:12px;line-height:1.55;color:var(--muted-foreground);padding:8px 4px}
+.modelBrandError{display:flex;align-items:center;gap:8px;padding:10px 11px;margin-top:12px;border-radius:9px;border:1px solid #f2b8ba;background:#fff1f1;color:#a93440;font-size:12px}
+.modelBrandError svg{flex-shrink:0}
+.modelBrandActions{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--border);background:var(--card)}
+.modelBrandActions>.back,.modelBrandActions>.next{flex:1}
+@media(max-width:600px){
+ .modelBrandBackdrop{padding:12px}
+ .modelBrandDialog{max-height:min(590px,85dvh)}
+ .modelBrandHeading{padding:18px 15px 14px}
+ .modelBrandContent{padding:15px}
+ .modelBrandActions{padding:12px 15px}
+ .modelBrandActions>.next{min-width:0}
+}
