@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Store Center SC">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0A2148"/><stop offset=".62" stop-color="#123F7B"/><stop offset="1" stop-color="#1E72BE"/></linearGradient>
+ <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#94D9FF"/><stop offset="1" stop-color="#3F8FEB"/></linearGradient>
+ <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#0A2D60"/><stop offset="1" stop-color="#091C3E"/></linearGradient>
+ <filter id="soft"><feGaussianBlur stdDeviation="16"/></filter>
+</defs>
+<rect width="512" height="512" rx="114" fill="url(#bg)"/>
+<circle cx="400" cy="102" r="125" fill="#59B3F4" opacity=".11" filter="url(#soft)"/>
+<circle cx="85" cy="445" r="129" fill="#4BC4FF" opacity=".08" filter="url(#soft)"/>
+<rect x="103" y="55" width="306" height="402" rx="56" fill="#06152F" opacity=".70"/>
+<rect x="111" y="61" width="290" height="387" rx="48" fill="none" stroke="url(#edge)" stroke-width="11"/>
+<rect x="128" y="91" width="256" height="308" rx="29" fill="url(#screen)"/>
+<rect x="218" y="73" width="76" height="9" rx="5" fill="#7BBEFF"/>
+<circle cx="256" cy="423" r="12" fill="#60ADF6"/>
+<path d="M168 308h175" stroke="#3FA4F1" stroke-width="4" opacity=".57"/>
+<text x="257" y="290" font-family="Arial, Helvetica, sans-serif" text-anchor="middle" fill="#FFFFFF" font-size="150" font-weight="800" letter-spacing="-12">SC</text>
+<g transform="translate(337 135)" fill="none" stroke="#96DCFF" stroke-linejoin="round" stroke-linecap="round">
+ <circle r="27" stroke-width="6"/><circle r="11" stroke-width="5"/>
+ <path d="M0-39v-9M0 39v9M39 0h9M-39 0h-9M28-28l8-8M-28 28l-8 8M-28-28l-8-8M28 28l8 8" stroke-width="7"/>
+</g>
+<g fill="#8FE0FF" opacity=".94"><circle cx="159" cy="156" r="5"/><circle cx="357" cy="339" r="4"/></g>
+</svg>
