@@ -1,6 +1,7 @@
 import React,{useEffect,useMemo,useRef,useState} from "react";
 import {Users,Package,Truck,Wallet,Receipt,Plus,Check,Search,Smartphone,TrendingUp,TrendingDown,ChartColumnIncreasing,Download,Printer,ShieldCheck,Settings,History,CalendarDays,UserRoundCog,AlertCircle,ExternalLink,ClipboardList,ShoppingBag,ChevronRight,CreditCard,Landmark,FileText} from "lucide-react";
 import s from "./StoreHub.module.css";
+import {tabArtwork} from "../lib/tabArtwork";
 export type Supplier={id:number;name:string;doc:string;phone:string;email:string;address:string;notes:string};
 export type Bill={id:number;supplier:string;description:string;category:string;value:number;paid:number;due:string;created:string};
 export type Claim={id:number;client:string;description:string;value:number;paid:number;due:string};
@@ -61,7 +62,7 @@ export default function StoreHub(props:Props){
  "Configurações":"configuracoes","Histórico de atividades":"historico",
  "Pesquisa global":"pesquisa","Impressões e etiquetas":"impressoes"
  };
- const title=(heading:string,subtitle:string)=><div className={s.hero}><img className={s.heroArtwork} src={import.meta.env.BASE_URL+"brand/sections/"+(sectionArt[heading]||"servicos")+".webp"} alt="" aria-hidden="true" decoding="async"/><span>STORE CENTER / GESTÃO</span><h1>{heading}</h1><p>{subtitle}</p></div>;
+ const title=(heading:string,subtitle:string)=><div className={s.hero}><img className={s.heroArtwork} src={import.meta.env.BASE_URL+"brand/sections/"+(sectionArt[heading]||"servicos")+".webp"} onError={e=>{if(!e.currentTarget.dataset.fallback){e.currentTarget.dataset.fallback="1";e.currentTarget.src=tabArtwork(heading)}}} alt="" aria-hidden="true" decoding="async"/><span>STORE CENTER / GESTÃO</span><h1>{heading}</h1><p>{subtitle}</p></div>;
  const toolbar=(action:string,fn:()=>void)=><div className={s.toolbar}><div className={s.search}><Search size={18}/><input placeholder="Pesquisar registros..." value={search} onChange={e=>setSearch(e.target.value)}/></div><button className={s.primary} onClick={fn}><Plus size={18}/>{action}</button></div>;
  const section=(heading:string,children:React.ReactNode)=><section className={s.panel}><h2>{heading}</h2>{children}</section>;
  const intro=(t:string)=><div className={s.empty}>{t}</div>;
