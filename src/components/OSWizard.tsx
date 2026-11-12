@@ -54,7 +54,7 @@ function CatalogSearch({
 }
 
 export default function OSWizard({clients,services,brands,models,onAddBrand,onAddModel,onClose,onSave}:{clients:WizardClient[];services:{name:string;price:number}[];brands:string[];models:CatalogModel[];onAddBrand:(brand:string)=>void;onAddModel:(item:CatalogModel)=>void;onClose:()=>void;onSave:(order:WizardOrder,newClient?:WizardClient)=>void}){
- const [step,setStep]=useState(0),[mode,setMode]=useState<"search"|"new">("search"),[query,setQuery]=useState(""),[selected,setSelected]=useState<number|null>(null),[f,setF]=useState<F>(initial),[error,setError]=useState(""),[addressOpen,setAddressOpen]=useState(false),[catalogNote,setCatalogNote]=useState<CatalogFeedback|null>(null);
+ const [step,setStep]=useState(0),[mode,setMode]=useState<"search"|"new">("search"),[query,setQuery]=useState(""),[selected,setSelected]=useState<number|null>(null),[f,setF]=useState<F>(initial),[error,setError]=useState(""),[addressOpen,setAddressOpen]=useState(false),[catalogNote,setCatalogNote]=useState<CatalogFeedback|null>(null),[showModelBrand,setShowModelBrand]=useState(false),[chosenModelBrand,setChosenModelBrand]=useState(""),[modelBrandQuery,setModelBrandQuery]=useState(""),[modelBrandError,setModelBrandError]=useState("");
  const change=(field:keyof F,value:string)=>{setF(p=>({...p,[field]:value}));setError("")};
  const matches=clients.filter(c=>simple([c.name,c.phone,c.cpf||"",c.email||""].join(" ")).includes(simple(query))).slice(0,12);
  const pick=(c:WizardClient)=>{setSelected(c.id);setMode("search");setF(p=>({...p,name:c.name,cpf:c.cpf||"",documentType:c.documentType||"CPF",phone:c.phone,email:c.email,address:c.address||"",birthDate:c.birthDate||"",source:c.source||"Não informado"}));setError("")};
@@ -81,9 +81,42 @@ export default function OSWizard({clients,services,brands,models,onAddBrand,onAd
  feedback={catalogNote?.kind==="model"?catalogNote:null}
  onInput={value=>{setF(old=>({...old,device:value}));setCatalogNote(null);setError("")}}
  onPick={choice=>{setF(old=>({...old,device:choice.label,brand:choice.detail||old.brand}));setCatalogNote(null);setError("")}}
- onAdd={()=>{const brand=f.brand.trim(),model=f.device.trim();if(!brand||!model){setError("Preencha a marca e o modelo antes de cadastrar.");return}const existing=models.find(m=>simple(m.brand)===simple(brand)&&simple(m.model)===simple(model)&&m.type===f.deviceType);if(existing){setCatalogNote({kind:"model",text:'O modelo "'+existing.model+'" já está cadastrado para '+existing.brand+'.',success:false});return}onAddModel({brand,model,type:f.deviceType});setCatalogNote({kind:"model",text:'Modelo "'+model+'" cadastrado com sucesso para '+brand+'!',success:true});setError("")}}/>
+ onAdd={()=>{const model=f.device.trim();if(!model){setError("Digite o nome do modelo antes de clicar em + Modelo.");return}const match=brands.find(b=>simple(b)===simple(f.brand));setChosenModelBrand(match||"");setModelBrandQuery("");setModelBrandError("");setShowModelBrand(true);setCatalogNote(null);setError("")}}}/>
  {field("Cor","color",{placeholder:"Ex.: Preto, azul metálico"})}{field("IMEI","imei",{placeholder:"Opcional"})}{field("Número de série","serial",{placeholder:"Opcional"})}{field("Acessórios recebidos","accessories",{placeholder:"Capa, carregador, chip..."})}</div>{textArea("Estado físico na entrada","physicalState","Riscos, trincas, marcas, peças ausentes...")}<div className={s.safety}><Info size={17}/> Para esta demonstração não solicite nem registre senhas reais de desbloqueio. O cadastro seguro desses dados exige proteção adicional.</div></>}
  {step===2&&<><div className={s.sectionIntro}><div className={s.sectionIcon}><Wrench size={22}/></div><h2>Atendimento e orçamento</h2><p>Registre o defeito e combine valores, prazo e garantia.</p></div>{textArea("Problema relatado pelo cliente","issue","Ex.: Não carrega, tela quebrada, desliga sozinho...")}<div className={s.fields}><label className={s.field}><span>Serviço solicitado</span><input list="oswiz-services" value={f.service} onChange={e=>{const found=services.find(z=>z.name===e.target.value);setF(t=>({...t,service:e.target.value,price:found?String(found.price):t.price}))}} placeholder="Selecione ou digite um serviço"/><datalist id="oswiz-services">{services.map(x=><option key={x.name} value={x.name}/>)}</datalist></label>{field("Valor previsto (R$)","price",{type:"number",placeholder:"0,00"})}{field("Custo estimado (R$)","cost",{type:"number",placeholder:"0,00"})}{field("Previsão de conclusão","expectedDate",{type:"date"})}{field("Garantia (dias)","warrantyDays",{type:"number"})}{field("Técnico responsável","technician",{placeholder:"Nome do técnico"})}</div>{textArea("Diagnóstico preliminar","diagnosis","Informações da análise técnica, se houver.")}{textArea("Observações internas","notes","Detalhes para a equipe de atendimento")}</>}
  {step===3&&<><div className={s.sectionIntro}><div className={s.sectionIcon}><ClipboardList size={22}/></div><h2>Revisar e abrir OS</h2><p>Confira os dados. Cliente e aparelho serão cadastrados no mesmo processo.</p></div><div className={s.summary}><h3>Cliente <button onClick={()=>setStep(0)}>Editar</button></h3><strong>{f.name}</strong><span>{f.phone||"Sem telefone"}{f.cpf?" · "+f.documentType+" "+f.cpf:""}</span><span>{mode==="new"?"Novo cadastro será criado automaticamente":"Cliente já cadastrado"}</span></div><div className={s.summary}><h3>Aparelho <button onClick={()=>setStep(1)}>Editar</button></h3><strong>{f.deviceType} · {f.brand} {f.device}</strong><span>Cor: {f.color||"Não informada"} · IMEI: {f.imei||"Não informado"}</span><span>{f.issue||f.service}</span></div><div className={s.summary}><h3>Orçamento <button onClick={()=>setStep(2)}>Editar</button></h3><strong>{reais(Number(f.price||0))}</strong><span>Serviço: {f.service||f.issue}</span><span>Previsão: {f.expectedDate||"A definir"} · Garantia: {f.warrantyDays||"0"} dias</span></div><div className={s.success}><ShieldCheck size={18}/> Ao confirmar, a nova OS aparecerá imediatamente na Bancada e no histórico do cliente.</div></>}
- </div><footer className={s.footer}><button className={s.back} onClick={step===0?onClose:()=>{setStep(v=>v-1);setError("")}}>{step===0?"Cancelar":"Voltar"}</button><button className={s.next} onClick={proceed}>{step===3?"Salvar e abrir OS":"Continuar"} {step===3?<Check size={17}/>:<ArrowRight size={18}/>}</button></footer></section></div>;
+ </div><footer className={s.footer}><button className={s.back} onClick={step===0?onClose:()=>{setStep(v=>v-1);setError("")}}>{step===0?"Cancelar":"Voltar"}</button><button className={s.next} onClick={proceed}>{step===3?"Salvar e abrir OS":"Continuar"} {step===3?<Check size={17}/>:<ArrowRight size={18}/>}</button></footer>
+ {showModelBrand&&<div className={s.modelBrandBackdrop} role="presentation" onMouseDown={e=>{if(e.currentTarget===e.target)setShowModelBrand(false)}} onKeyDown={e=>{if(e.key==="Escape")setShowModelBrand(false)}}>
+  <div className={s.modelBrandDialog} role="dialog" aria-modal="true" aria-labelledby="model-brand-title">
+   <div className={s.modelBrandHeading}>
+    <div><span className={s.modelBrandEyebrow}>CADASTRO DE MODELO</span><h3 id="model-brand-title">Escolha a marca do modelo</h3><p>Para cadastrar <strong>{f.device.trim()}</strong> como {f.deviceType.toLowerCase()}, selecione a marca correspondente.</p></div>
+    <button type="button" className={s.iconButton} onClick={()=>setShowModelBrand(false)} aria-label="Fechar seleção de marca"><X size={20}/></button>
+   </div>
+   <div className={s.modelBrandContent}>
+    <label className={s.field} htmlFor="model-brand-filter"><span>Pesquisar marca cadastrada</span></label>
+    <div className={s.modelBrandSearch}><Search size={18}/><input id="model-brand-filter" autoFocus value={modelBrandQuery} onChange={e=>setModelBrandQuery(e.target.value)} placeholder="Ex.: Samsung, Apple, Tramontina..." /></div>
+    <div className={s.modelBrandList} role="group" aria-label="Marcas disponíveis">
+      {brands.filter(b=>simple(b).includes(simple(modelBrandQuery))).map(brand=><button type="button" key={brand} className={simple(chosenModelBrand)===simple(brand)?s.modelBrandSelected:""} onClick={()=>{setChosenModelBrand(brand);setModelBrandError("")}}><span>{brand}</span>{simple(chosenModelBrand)===simple(brand)&&<Check size={18}/>}</button>)}
+      {!brands.some(b=>simple(b).includes(simple(modelBrandQuery)))&&<p>Nenhuma marca encontrada. Cadastre-a pelo botão + Marca no formulário.</p>}
+    </div>
+    {modelBrandError&&<div role="alert" className={s.modelBrandError}><AlertCircle size={16}/>{modelBrandError}</div>}
+   </div>
+   <div className={s.modelBrandActions}>
+     <button type="button" className={s.back} onClick={()=>setShowModelBrand(false)}>Cancelar</button>
+     <button type="button" className={s.next} onClick={()=>{
+       const brand=brands.find(b=>simple(b)===simple(chosenModelBrand));
+       if(!brand){setModelBrandError("Selecione uma marca da lista para continuar.");return}
+       const model=f.device.trim();
+       if(models.some(m=>simple(m.brand)===simple(brand)&&simple(m.model)===simple(model)&&m.type===f.deviceType)){
+         setModelBrandError('O modelo "'+model+'" já está cadastrado para '+brand+'.');return
+       }
+       onAddModel({brand,model,type:f.deviceType});
+       setF(v=>({...v,brand,device:model}));
+       setShowModelBrand(false);
+       setCatalogNote({kind:"model",text:'Modelo "'+model+'" cadastrado com sucesso para '+brand+'!',success:true});
+     }}>Cadastrar modelo <Check size={17}/></button>
+   </div>
+  </div>
+ </div>}
+ </section></div>;
 }
