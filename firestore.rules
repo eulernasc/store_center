@@ -1,0 +1,7 @@
+rules_version = "2";
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Bloqueado por padrão até implantar login e permissões por loja.
+    match /{document=**} { allow read, write: if false; }
+  }
+}
