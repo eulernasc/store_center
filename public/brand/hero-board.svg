@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Arte de manutenção de smartphones em tons de azul">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2=".4"><stop stop-color="#071732"/><stop offset=".42" stop-color="#0a2450"/><stop offset="1" stop-color="#1057a0"/></linearGradient>
+ <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101f3c"/><stop offset=".52" stop-color="#174c86"/><stop offset="1" stop-color="#0b274c"/></linearGradient>
+ <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b5dfff"/><stop offset=".4" stop-color="#438bea"/><stop offset="1" stop-color="#1b55a7"/></linearGradient>
+ <linearGradient id="beam"><stop stop-color="#00d9ff" stop-opacity="0"/><stop offset=".65" stop-color="#00bdff" stop-opacity=".25"/><stop offset="1" stop-color="#067dfe" stop-opacity=".06"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#0da8ff" stop-opacity=".42"/><stop offset="1" stop-color="#009dff" stop-opacity="0"/></radialGradient>
+ <filter id="blur"><feGaussianBlur stdDeviation="23"/></filter>
+ <filter id="shadow" x="-40%" y="-40%" width="190%" height="190%"><feDropShadow dx="0" dy="15" stdDeviation="20" flood-color="#00132a" flood-opacity=".8"/></filter>
+ <pattern id="grid" width="58" height="58" patternUnits="userSpaceOnUse" patternTransform="skewX(-20)"><path d="M58 0H0V58" fill="none" stroke="#7fc8ff" stroke-opacity=".045"/></pattern>
+</defs>
+<rect width="1600" height="360" fill="url(#bg)"/><rect width="1600" height="360" fill="url(#grid)"/>
+<path d="M130 360 445 0H615L314 360Z" fill="#2a77d3" opacity=".065"/>
+<path d="M-30 350 300 0M260 390 615 0" stroke="#91ccff" stroke-opacity=".065" stroke-width="2"/>
+<ellipse cx="1185" cy="200" rx="530" ry="330" fill="url(#glow)"/>
+<g opacity=".34" fill="none" stroke="#39b5ff" stroke-width="2"><path d="M780 326h118l49-49h110m-273-60h92l24 25h91m420-221h-94l-46 46h-84"/><circle cx="780" cy="326" r="5" fill="#35b9ff"/><circle cx="1075" cy="277" r="5" fill="#35b9ff"/><circle cx="1420" cy="21" r="5" fill="#35b9ff"/></g>
+<g transform="translate(1105 225) rotate(-11)" filter="url(#shadow)">
+ <rect x="-305" y="-106" width="630" height="268" rx="42" fill="#071329" stroke="#70aff8" stroke-width="10"/>
+ <rect x="-287" y="-88" width="590" height="232" rx="22" fill="#134e86" stroke="#1d93e9" stroke-width="3"/>
+ <g stroke="#40b6fa" stroke-opacity=".5" fill="none" stroke-width="5">
+ <path d="M-260 65h100v-86h80m-180 120h160V53h55m80-115V38h93m165 79h-95V13h-62m-6-81v43h-48"/>
+ </g>
+ <rect x="-118" y="-67" width="245" height="172" rx="14" fill="#0a1a34" stroke="#7dbefb" stroke-width="9"/>
+ <rect x="-101" y="-50" width="212" height="138" rx="5" fill="#10284b" stroke="#2a598f" stroke-width="3"/>
+ <g stroke="#c4e8ff" opacity=".66" stroke-width="4">
+ <path d="M-78 -76v-24M-32 -76v-24M14 -76v-24M60 -76v-24M106 -76v-24M-78 113v25M-32 113v25M14 113v25M60 113v25M106 113v25"/>
+ <path d="M-128-40h-26M-128 5h-26M-128 50h-26M137-40h25M137 5h25M137 50h25"/>
+ </g>
+ <rect x="-60" y="-28" width="120" height="96" rx="12" fill="#215185" stroke="#74c8ff" stroke-width="5"/>
+ <circle cx="0" cy="21" r="26" fill="#10213d" stroke="#8fdaff" stroke-width="4"/>
+ <path d="M-10 21h20M0 11v20" stroke="#8ed6ff" stroke-width="4"/>
+</g>
+<g transform="translate(1378 50) rotate(30)" filter="url(#shadow)">
+ <rect x="-26" y="-68" width="52" height="115" rx="20" fill="#173c6b" stroke="#78b2ff" stroke-width="5"/>
+ <path d="M-12 46h24L4 197H-4Z" fill="#d4efff" stroke="#619bc9" stroke-width="3"/>
+ <circle cx="0" cy="198" r="9" fill="#4edaff" filter="url(#blur)"/>
+</g><path d="M0 0H840Q620 110 805 360H0Z" fill="#06162e" opacity=".53"/>
+<path d="M650 360 970 0" stroke="#47b7ff" opacity=".13" stroke-width="2"/>
+</svg>
