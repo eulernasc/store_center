@@ -22,7 +22,7 @@ function CatalogSearch({
 }){
  const [open,setOpen]=useState(false),[active,setActive]=useState(0);
  const root=useRef<HTMLDivElement>(null),id=useId();
- const filtered=choices.filter(c=>simple(c.label+" "+(c.detail||"")).includes(simple(value))).slice(0,9);
+ const filtered=choices.filter(c=>simple(c.label+" "+(c.detail||"")).includes(simple(value)));
  useEffect(()=>{
   const close=(e:PointerEvent)=>{if(root.current&&!root.current.contains(e.target as Node))setOpen(false)};
   document.addEventListener("pointerdown",close);
