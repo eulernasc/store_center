@@ -79,3 +79,15 @@
 .printOnly{display:none}
 @media(max-width:650px){.backdrop{padding:0;align-items:stretch}.sheet{width:100%;max-height:100dvh;height:100dvh;border-radius:0}.header{padding:18px 16px}.header h2{font-size:20px}.body{padding:15px}.footer{padding:12px 15px}.fields{grid-template-columns:1fr}.steps button{padding:9px 5px;font-size:11px;gap:4px}.steps button span{width:22px;height:22px;min-width:22px}.osHead strong{font-size:15px}.checkGrid{grid-template-columns:1fr}.photos{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs button{padding:12px 10px}.clientMatches{max-height:180px}}
 @media print{.backdrop{position:static!important;background:#fff!important;padding:0!important}.sheet{box-shadow:none!important;border:0!important;max-height:unset!important;height:auto!important;overflow:visible!important}.header,.footer{display:none!important}.body{display:block!important;overflow:visible!important;padding:0!important}.body>*:not(.printOnly){display:none!important}.printOnly{display:block!important;font:15px Arial;color:#111;white-space:normal}}
+
+.paymentTotals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 14px}
+.paymentTotals span{background:var(--card);color:var(--muted-foreground);border:1px solid var(--border);border-radius:9px;padding:12px 9px;font-size:11px;display:flex;flex-direction:column;gap:5px}
+.paymentTotals b{color:var(--foreground);font-size:15px}
+.checklistGrid{display:grid;grid-template-columns:1fr;gap:12px}
+.checklistEntry{border:1px solid var(--border);background:var(--secondary);border-radius:13px;padding:15px;display:flex;flex-direction:column;gap:11px}
+.checklistEntry strong{font-size:13px;color:var(--foreground)}
+.checkOptions{display:flex;gap:7px;flex-wrap:wrap}
+.checkOptions button{background:var(--card);border:1px solid var(--border);color:var(--foreground);padding:9px 13px;border-radius:9px;min-height:39px;font-size:12px;font-weight:700;cursor:pointer}
+.checkOptions .optionSelected{background:#216be0;color:white;border-color:#216be0}
+.checklistEntry input{width:100%;padding:11px 12px;background:var(--card);border:1px solid var(--border);border-radius:9px;color:var(--foreground);font-size:12px}
+@media(max-width:550px){.paymentTotals{grid-template-columns:1fr 1fr}.paymentTotals span:last-child{grid-column:span 2}.checkOptions button{flex:1}}
