@@ -26,3 +26,6 @@ await icon("apple-touch-icon-sc-v4.png",180,0.94);
 const socialSvg=await readFile(resolve(root,"scripts/preview-social.svg"));
 await sharp(socialSvg,{density:120}).resize(1200,630,{fit:"fill"}).flatten({background:"#06142e"}).jpeg({quality:89,mozjpeg:true}).toFile(resolve(publicDir,"og-store-center-v4.jpg"));
 console.log("WhatsApp preview: og-store-center-v4.jpg (1200x630)");
+
+// Gerar banners específicos de cada página no mesmo build do GitHub Pages.
+await import("./generate-section-banners.mjs");

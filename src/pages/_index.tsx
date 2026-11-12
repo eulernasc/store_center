@@ -177,7 +177,13 @@ export default function StoreCenter(){
  const heading=(title:string,subtitle:string,action?:string)=>{
   const isVision=title==="Visão geral";
   const isBench=/^Bancada/i.test(title);
-  const artwork=isVision?"visao-geral-aprovada.webp":isBench?"bancada-aprovada.webp":(/ordens|reparo|estoque|peças|fornecedores|aparelhos|garantias/i.test(title)?"hero-board.svg":"hero-phone.svg");
+  const sectionArt:Record<string,string>={
+    "Ordens de serviço":"ordens-servico","Orçamentos":"orcamentos","Clientes":"clientes",
+    "Peças e estoque":"pecas-estoque","Venda de produtos":"venda-produtos",
+    "Aparelhos":"aparelhos","Tabela de serviços":"servicos","Financeiro":"financeiro",
+    "Garantias":"garantias","Vitrine online":"vitrine"
+  };
+  const artwork=isVision?"visao-geral-aprovada.webp":isBench?"bancada-aprovada.webp":"sections/"+(sectionArt[title]||"servicos")+".webp";
   const classes=[s.heading,isVision?s.headingVision:"",isBench?s.headingBancada:""].filter(Boolean).join(" ");
   return <div className={classes}>
     <img className={s.headingImage} src={import.meta.env.BASE_URL+"brand/"+artwork} alt="" aria-hidden="true" decoding="async" onError={e=>e.currentTarget.parentElement?.classList.add(s.headingImageMissing)}/>

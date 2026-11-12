@@ -53,7 +53,15 @@ export default function StoreHub(props:Props){
  const openOrders=orders.filter(o=>!o.paid).reduce((v,o)=>v+Math.max(0,o.price-(o.paidAmount||0)),0);
  const openBills=hub.bills.reduce((v,b)=>v+Math.max(0,b.value-b.paid),0);
  const metric=(label:string,value:string,desc:string,icon:React.ReactNode)=><div className={s.metric}><div className={s.metricTop}><div>{label}<strong>{value}</strong><small>{desc}</small></div><span>{icon}</span></div></div>;
- const title=(heading:string,subtitle:string)=><div className={s.hero}><img className={s.heroArtwork} src={import.meta.env.BASE_URL+"brand/"+(/fornecedores|aparelhos|estoque|pagamentos|impressões|relatórios/i.test(heading)?"hero-board.svg":"hero-phone.svg")} alt="" aria-hidden="true" decoding="async"/><span>STORE CENTER / GESTÃO</span><h1>{heading}</h1><p>{subtitle}</p></div>;
+ const sectionArt:Record<string,string>={
+ "Caixa":"caixa","Fornecedores":"fornecedores","Contas a receber":"receber",
+ "Contas a pagar":"pagar","Venda de aparelhos":"venda-aparelhos",
+ "Relatórios":"relatorios","Inteligência do negócio":"inteligencia",
+ "Equipe e funções":"equipe","Catálogo de dispositivos":"catalogo",
+ "Configurações":"configuracoes","Histórico de atividades":"historico",
+ "Pesquisa global":"pesquisa","Impressões e etiquetas":"impressoes"
+ };
+ const title=(heading:string,subtitle:string)=><div className={s.hero}><img className={s.heroArtwork} src={import.meta.env.BASE_URL+"brand/sections/"+(sectionArt[heading]||"servicos")+".webp"} alt="" aria-hidden="true" decoding="async"/><span>STORE CENTER / GESTÃO</span><h1>{heading}</h1><p>{subtitle}</p></div>;
  const toolbar=(action:string,fn:()=>void)=><div className={s.toolbar}><div className={s.search}><Search size={18}/><input placeholder="Pesquisar registros..." value={search} onChange={e=>setSearch(e.target.value)}/></div><button className={s.primary} onClick={fn}><Plus size={18}/>{action}</button></div>;
  const section=(heading:string,children:React.ReactNode)=><section className={s.panel}><h2>{heading}</h2>{children}</section>;
  const intro=(t:string)=><div className={s.empty}>{t}</div>;
