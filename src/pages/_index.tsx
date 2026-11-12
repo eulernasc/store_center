@@ -4,6 +4,7 @@ import s from "./_index.module.css";
 import {BudgetStudio,OSDossier,ClientDossier} from "../components/ServiceWorkflows";
 import OSWizard,{type WizardOrder,type WizardClient} from "../components/OSWizard";
 import StoreHub,{defaultHub,type HubData,type HubFinance} from "../components/StoreHub";
+import {tabArtwork} from "../lib/tabArtwork";
 type OS={id:number;client:string;clientId?:number;device:string;deviceType?:string;brand?:string;service:string;price:number;cost:number;status:string;date:string;paid:boolean;paidAmount?:number;parts?:{id:number;name:string;qty:number;cost:number}[];phone:string;imei?:string;serial?:string;color?:string;physicalState?:string;issue?:string;diagnosis?:string;report?:string;accessories?:string;technician?:string;attendant?:string;checklist?:Record<string,string|boolean>;checklistNotes?:Record<string,string>;history?:{when:string;message:string}[];photos?:string[];signature?:string;notes?:string;expectedDate?:string;warrantyDays?:number};
 type Client={id:number;name:string;phone:string;email:string;cpf?:string;address?:string;birthDate?:string;source?:string;documentType?:string};
 type Product={id:number;name:string;category:string;price:number;cost:number;qty:number;min:number};
@@ -183,10 +184,10 @@ export default function StoreCenter(){
     "Aparelhos":"aparelhos","Tabela de serviços":"servicos","Financeiro":"financeiro",
     "Garantias":"garantias","Vitrine online":"vitrine"
   };
-  const artwork=isVision?"visao-geral-aprovada.webp":isBench?"bancada-aprovada.webp":"sections/"+(sectionArt[title]||"servicos")+".webp";
+  const artwork=isVision?import.meta.env.BASE_URL+"brand/visao-geral-aprovada.webp":isBench?import.meta.env.BASE_URL+"brand/bancada-aprovada.webp":import.meta.env.BASE_URL+"brand/sections/"+(sectionArt[title]||"servicos")+".webp";
   const classes=[s.heading,isVision?s.headingVision:"",isBench?s.headingBancada:""].filter(Boolean).join(" ");
   return <div className={classes}>
-    <img className={s.headingImage} src={import.meta.env.BASE_URL+"brand/"+artwork} alt="" aria-hidden="true" decoding="async" onError={e=>e.currentTarget.parentElement?.classList.add(s.headingImageMissing)}/>
+    <img className={s.headingImage} src={artwork} alt="" aria-hidden="true" decoding="async" onError={e=>{if(!e.currentTarget.dataset.fallback){e.currentTarget.dataset.fallback="1";e.currentTarget.src=tabArtwork(title)}else e.currentTarget.parentElement?.classList.add(s.headingImageMissing)}}/>
     <div className={s.headingInfo}><div className={s.eyebrow}>STORE CENTER / {title.toUpperCase()}</div><h1>{title}</h1><p>{subtitle}</p></div>
     {action&&(isVision?<><button type="button" className={s.headingArtworkHotspot} aria-label="Criar nova ordem de serviço" title="Nova OS" onClick={()=>open(action)}><span className={s.visuallyHidden}>Nova OS</span></button><button type="button" className={s.primary+" "+s.headingMobileAction} onClick={()=>open(action)}><Plus size={18}/>{action}</button></>:<button type="button" className={s.primary} onClick={()=>open(action)}><Plus size={18}/>{action}</button>)}
   </div>;
@@ -209,7 +210,7 @@ export default function StoreCenter(){
  return <div className={s.app+" "+(isDark?s.dark:"")}>
   {mobileMenu&&<div className={s.backdrop} onClick={()=>setMobileMenu(false)}/>}
   <aside className={s.sidebar+" "+(mobileMenu?s.open:"")}>
-   <div className={s.brand}><img className={s.brandLogo} src={import.meta.env.BASE_URL+"brand/store-center-mark.webp"} width={72} height={72} alt="Logo Store Center" decoding="async"/><div className={s.brandName}><strong>STORE <span>CENTER</span></strong><small>GESTÃO DA ASSISTÊNCIA</small></div><button className={s.closeMobile} onClick={()=>setMobileMenu(false)}><X size={20}/></button></div>
+   <div className={s.brand}><img className={s.brandLogo} src={import.meta.env.BASE_URL+"brand/store-center-emblem.svg"} width={72} height={72} alt="Logo Store Center" decoding="async"/><div className={s.brandName}><strong>STORE <span>CENTER</span></strong><small>GESTÃO DA ASSISTÊNCIA</small></div><button className={s.closeMobile} onClick={()=>setMobileMenu(false)}><X size={20}/></button></div>
    <nav>{[{title:"GERAL",labels:["Visão geral","Pesquisar","Bancada","Ordens de serviço"]},{title:"CLIENTES E ATENDIMENTO",labels:["Clientes","Aparelhos","Catálogo de dispositivos","Orçamentos","Garantias","Impressões"]},{title:"VENDAS E ESTOQUE",labels:["Venda de produtos","Venda de aparelhos","Peças e estoque","Fornecedores"]},{title:"ADMINISTRATIVO",labels:["Serviços","Financeiro","Contas a receber","Contas a pagar","Caixa","Relatórios","Inteligência"]},{title:"GESTÃO",labels:["Equipe","Histórico","Configurações"]}].map(group=><div className={s.navSection} key={group.title}><div className={s.navSectionTitle}>{group.title}</div>{nav.filter(entry=>group.labels.includes(entry.label)).map(({label,icon:Icon})=><button key={label} className={page===label?s.activeNav:""} onClick={()=>changePage(label)}><Icon size={19}/><span>{label}</span>{label==="Ordens de serviço"&&<em>{active.length}</em>}</button>)}</div>)}</nav>
    <div className={s.sideBottom}><div className={s.shopBadge}><div className={s.storeAvatar}>SC</div><div><b>Store Center</b><small>Ambiente demonstrativo</small></div></div><span><span className={s.onlineDot}/> Todos os dados são fictícios</span></div>
   </aside>
