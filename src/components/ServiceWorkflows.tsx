@@ -1,9 +1,9 @@
 import React,{useRef,useState,useEffect} from "react";
-import {X,ArrowLeft,ArrowRight,Check,UserRound,Smartphone,ClipboardList,ShieldCheck,Camera,PenLine,FileText,MessageCircle,Printer,Plus,Trash2,CheckCircle2,Clock3,Wrench,Search,Save,History,Wallet} from "lucide-react";
+import {X,ArrowLeft,ArrowRight,Check,UserRound,Smartphone,ClipboardList,ShieldCheck,Camera,PenLine,FileText,MessageCircle,Printer,Plus,Trash2,CheckCircle2,Clock3,Wrench,Search,Save,History,Wallet,Receipt,CalendarDays,CreditCard,Percent,Info} from "lucide-react";
 import s from "./ServiceWorkflows.module.css";
 type Client={id:number;name:string;phone:string;email:string;cpf?:string;address?:string};
 type Budget={id:number;client:string;device:string;service:string;price:number;status:string;phone?:string;color?:string;imei?:string;accessories?:string;notes?:string;cost?:number;date?:string;cpf?:string};
-type Order={id:number;client:string;device:string;service:string;price:number;cost:number;status:string;date:string;paid:boolean;paidAmount?:number;parts?:{id:number;name:string;qty:number;cost:number}[];phone:string;imei?:string;color?:string;diagnosis?:string;report?:string;accessories?:string;technician?:string;attendant?:string;checklist?:Record<string,string|boolean>;checklistNotes?:Record<string,string>;history?:{when:string;message:string}[];photos?:string[];signature?:string;notes?:string};
+type Order={id:number;client:string;device:string;service:string;price:number;cost:number;status:string;date:string;paid:boolean;paidAmount?:number;plannedPaymentMethod?:string;exitChecklist?:Record<string,string>;parts?:{id:number;name:string;qty:number;cost:number}[];phone:string;imei?:string;color?:string;diagnosis?:string;report?:string;accessories?:string;technician?:string;attendant?:string;checklist?:Record<string,string|boolean>;checklistNotes?:Record<string,string>;history?:{when:string;message:string}[];photos?:string[];signature?:string;notes?:string};
 const money=(v:number)=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v||0);
 const stages=["Em análise","Aguardando peça","Em serviço","Concluído","Entregue"];
 const checks=["Aparelho liga","Tela responde ao toque","Câmeras funcionam","Áudio e microfone","Conectores de carga","Wi-Fi e rede","Biometria/Face ID","Botões físicos","Carcaça e vidros","Acessórios conferidos"];
@@ -41,9 +41,50 @@ export function ClientDossier({client,orders,onSave,onClose}:{client:Client;orde
  <div className={s.section}><h3><History size={18}/> Histórico de atendimentos ({orders.length})</h3>{orders.length?orders.map(o=><div className={s.historyRow} key={o.id}><span className={s.bubble}><Smartphone size={17}/></span><div><strong>OS #{o.id} — {o.device}</strong><small>{o.service} · {o.status}</small></div><b>{money(o.price)}</b></div>):<p className={s.note}>Nenhuma OS cadastrada para este cliente.</p>}</div>
  </Shell>
 }
-export function OSDossier({order,onClose,onSave,onReceive,products,onUsePart,templates,checklistItems,paymentMethods}:{order:Order;onClose:()=>void;onSave:(changes:Partial<Order>)=>void;onReceive:(amount:number,method:string)=>void;products:{id:number;name:string;qty:number;cost:number}[];onUsePart:(productId:number,qty:number)=>void;templates:{open:string;ready:string};checklistItems:string[];paymentMethods:string[]}){
+export function OSDossier({order,onClose,onSave,onReceive,products,onUsePart,templates,checklistItems,paymentMethods}:{order:Order;onClose:()=>void;onSave:(changes:Partial<Order>)=>void;onReceive:(amount:number,method:string,adjustments?:{discount:number;fee:number;installments:number;date:string})=>void;products:{id:number;name:string;qty:number;cost:number}[];onUsePart:(productId:number,qty:number)=>void;templates:{open:string;ready:string};checklistItems:string[];paymentMethods:string[]}){
  const [tab,setTab]=useState("Atendimento"),[draft,setDraft]=useState<Order>({...order,checklist:{...order.checklist},photos:[...(order.photos||[])],history:[...(order.history||[])]}),[uploading,setUploading]=useState(false),[msg,setMsg]=useState("");
- const [amount,setAmount]=useState(String(Math.max(0,order.price-(order.paidAmount||0)))),[paymentMethod,setPaymentMethod]=useState("Pix");
+ const [amount,setAmount]=useState(String(Math.max(0,order.price-(order.paidAmount||0)))),[paymentMethod,setPaymentMethod]=useState(order.plannedPaymentMethod||"Pix");
+ const [receiptOpen,setReceiptOpen]=useState(false),[exitOpen,setExitOpen]=useState(false);
+ const [discount,setDiscount]=useState("0"),[discountPercent,setDiscountPercent]=useState(false),[partial,setPartial]=useState(false);
+ const [installments,setInstallments]=useState("1"),[feePercent,setFeePercent]=useState("0"),[passFee,setPassFee]=useState(false);
+ const [receiptDate,setReceiptDate]=useState(()=>new Date().toISOString().slice(0,10));
+ const [receiptError,setReceiptError]=useState("");
+ const [exitChecks,setExitChecks]=useState<Record<string,string>>({...order.exitChecklist});
+ const left=Math.max(0,draft.price-(draft.paidAmount||0));
+ const discountRaw=Number(discount||0),feeRaw=Number(feePercent||0);
+ const discountAmount=Number.isFinite(discountRaw)&&discountRaw>=0?Math.min(left,discountPercent?left*discountRaw/100:discountRaw):0;
+ const cardMethod=/cr[eé]dito|d[eé]bito|cart[aã]o/i.test(paymentMethod);
+ const feeAmount=cardMethod&&passFee&&Number.isFinite(feeRaw)&&feeRaw>=0?(left-discountAmount)*feeRaw/100:0;
+ const receiptTotal=Math.max(0,Math.round((left-discountAmount+feeAmount)*100)/100);
+ const receiptNow=partial?Number(amount):receiptTotal;
+ const plannedMethodList=[...new Set(["Pix","Dinheiro","Cartão de débito","Cartão de crédito",...paymentMethods,order.plannedPaymentMethod||"Pix"])].filter(Boolean);
+ const openReceipt=()=>{setReceiptError("");setDiscount("0");setFeePercent("0");setPassFee(false);setPartial(false);setInstallments("1");setPaymentMethod(draft.plannedPaymentMethod||"Pix");setAmount(String(left));setReceiptOpen(true)};
+ const finishReceipt=()=>{
+  if(draft.price!==order.price){setReceiptError("Salve as alterações do valor da OS antes de registrar o recebimento.");return}
+  if(!receiptDate){setReceiptError("Informe a data do recebimento.");return}
+  if(!Number.isFinite(discountRaw)||discountRaw<0||(discountPercent&&discountRaw>100)||discountAmount>=left){setReceiptError("Informe um desconto válido e menor que o saldo restante.");return}
+  if(!Number.isFinite(feeRaw)||feeRaw<0||feeRaw>30){setReceiptError("A taxa deve estar entre 0% e 30%.");return}
+  if(!Number.isFinite(receiptNow)||receiptNow<=0||receiptNow>receiptTotal+0.001){setReceiptError("O valor recebido deve ser positivo e não pode ultrapassar "+money(receiptTotal)+".");return}
+  const payValue=Math.round(receiptNow*100)/100,parts=cardMethod&&/cr[eé]dito/i.test(paymentMethod)?Number(installments):1;
+  if(!Number.isInteger(parts)||parts<1||parts>12){setReceiptError("Selecione um parcelamento válido.");return}
+  const newPrice=Math.round((draft.price-discountAmount+feeAmount)*100)/100;
+  const newPaidAmount=Math.round(((draft.paidAmount||0)+payValue)*100)/100;
+  onReceive(payValue,paymentMethod,{discount:discountAmount,fee:feeAmount,installments:parts,date:receiptDate});
+  setDraft(d=>({...d,price:newPrice,paidAmount:newPaidAmount,paid:newPaidAmount>=newPrice-0.001,
+   history:[...(d.history||[]),{when:now(),message:"Recebimento de "+money(payValue)+" em "+paymentMethod+(parts>1?" ("+parts+"x)":"")+(discountAmount>0?" · Desconto "+money(discountAmount):"")+(feeAmount>0?" · Acréscimo "+money(feeAmount):"")}] }));
+  setReceiptOpen(false);setReceiptError("");
+  setAmount(String(Math.max(0,newPrice-newPaidAmount)));
+  if(newPaidAmount>=newPrice-0.001&&draft.status!=="Entregue"){setExitOpen(true);setMsg("Pagamento registrado. Confira a saída do aparelho para concluir a entrega.");}
+  else setMsg("Recebimento lançado no Financeiro. Saldo restante: "+money(Math.max(0,newPrice-newPaidAmount)));
+ };
+ const finalizeExit=()=>{
+   if(checklistItems.some(item=>!exitChecks[item])){setReceiptError("Avalie todos os itens da conferência de saída.");return}
+   const nextHistory=[...(draft.history||[]),{when:now(),message:"Aparelho entregue após conferência de saída"}];
+   onSave({...draft,status:"Entregue",exitChecklist:exitChecks,history:nextHistory});
+   setDraft(d=>({...d,status:"Entregue",exitChecklist:exitChecks,history:nextHistory}));
+   setExitOpen(false);setReceiptError("");setMsg("Ordem de serviço finalizada e aparelho marcado como entregue.");
+ };
+
  const fileRef=useRef<HTMLInputElement>(null);
  const [partId,setPartId]=useState(""),[partQty,setPartQty]=useState("1");
  useEffect(()=>{setDraft({...order,checklist:{...order.checklist},photos:[...(order.photos||[])],history:[...(order.history||[])]})},[order.id]);
