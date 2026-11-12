@@ -1,5 +1,5 @@
 import React,{useEffect,useId,useRef,useState} from "react";
-import {ArrowLeft,ArrowRight,Check,ChevronRight,Search,UserRound,UserRoundPlus,Smartphone,Tablet, Laptop,Monitor,Gamepad2,Watch,Box, X, ClipboardList, Wrench, CalendarDays, ShieldCheck, Info,AlertCircle} from "lucide-react";
+import {ArrowLeft,ArrowRight,Check,ChevronRight,Search,UserRound,UserRoundPlus,Smartphone,Tablet, Laptop,Monitor,Gamepad2,Watch,Box, X, ClipboardList, Wrench, CalendarDays, ShieldCheck, Info,AlertCircle,Plus,CheckCircle2} from "lucide-react";
 import s from "./OSWizard.module.css";
 export type WizardClient={id:number;name:string;phone:string;email:string;cpf?:string;address?:string;birthDate?:string;source?:string;documentType?:string};
 export type WizardOrder={id:number;client:string;clientId?:number;phone:string;device:string;deviceType:string;brand?:string;color?:string;imei?:string;serial?:string;accessories?:string;physicalState?:string;issue?:string;diagnosis?:string;service:string;price:number;cost:number;status:string;date:string;paid:boolean;expectedDate?:string;warrantyDays?:number;notes?:string;technician?:string;history?:{when:string;message:string}[]};
