@@ -44,6 +44,26 @@ export default function StoreCenter(){
  const [serviceSearch,setServiceSearch]=useState("");
  const normalizeService=(v:string)=>v.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\s+/g," ").trim();
  const [workflow,setWorkflow]=useState<"osNew"|"budget"|"osDetails"|"clientDetails"|null>(null),[budgetSelected,setBudgetSelected]=useState<number|null>(null),[clientSelected,setClientSelected]=useState<number|null>(null);
+ useEffect(()=>{
+  // Enquanto houver um modal aberto, o fundo não deve receber scroll.
+  if(!workflow&&!modal)return;
+  const body=document.body,html=document.documentElement;
+  const previous={bodyOverflow:body.style.overflow,htmlOverflow:html.style.overflow,bodyPosition:body.style.position,bodyTop:body.style.top,bodyWidth:body.style.width};
+  const top=window.scrollY;
+  body.style.overflow="hidden";
+  html.style.overflow="hidden";
+  body.style.position="fixed";
+  body.style.top="-"+top+"px";
+  body.style.width="100%";
+  return ()=>{
+   body.style.overflow=previous.bodyOverflow;
+   html.style.overflow=previous.htmlOverflow;
+   body.style.position=previous.bodyPosition;
+   body.style.top=previous.bodyTop;
+   body.style.width=previous.bodyWidth;
+   window.scrollTo(0,top);
+  };
+ },[workflow,modal]);
  const [finPeriod,setFinPeriod]=useState<FinancialPeriod>("mes"),[periodOpen,setPeriodOpen]=useState(false),[finStart,setFinStart]=useState(dayString(new Date(new Date().getFullYear(),new Date().getMonth(),1))),[finEnd,setFinEnd]=useState(today()),[customStart,setCustomStart]=useState(finStart),[customEnd,setCustomEnd]=useState(finEnd);
  useEffect(()=>{try{localStorage.setItem("storecenter-demo-v1",JSON.stringify(data))}catch{console.warn("Armazenamento local insuficiente")}},[data]);
  useEffect(()=>{try{localStorage.setItem("storecenter-hub-v1",JSON.stringify(hub))}catch{console.warn("Armazenamento local insuficiente")}},[hub]);
