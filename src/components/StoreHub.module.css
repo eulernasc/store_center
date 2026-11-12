@@ -55,3 +55,9 @@
 .printSheet h2{font-size:17px}.thermal{max-width:80mm;font-size:11px;line-height:1.45}.thermal h2{font-size:13px}.sticker{max-width:60mm;font-size:10px;line-height:1.35}.sticker h2{font-size:11px}
 @media(max-width:650px){.hero{border-radius:0;margin:0 -12px 18px;min-height:143px;padding:25px 20px}.hero h1{font-size:26px}.toolbar{flex-direction:column;align-items:stretch}.toolbar .search{width:100%}.fields{grid-template-columns:1fr}.panel{padding:17px 14px}.record{gap:9px}.record>.primary,.record>.secondary{padding:9px 11px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{padding:12px}.metricTop strong{font-size:18px}.listStats{grid-template-columns:1fr}.barRow{grid-template-columns:minmax(82px,115px) minmax(0,1fr) 22px}.amount{align-items:flex-start}}
 @media print{.hero,.metrics,.toolbar,.panel,.periodBar,.disclaimer{display:none!important}.printSheet,.printSheet *{visibility:visible!important}.printSheet{position:fixed;inset:0;border:0;margin:0;background:#fff!important;color:#111!important;box-shadow:none!important;z-index:99999}.printSheet *{color:#111!important}}
+
+/* Navegação contextual a partir de cartões da visão geral. */
+.resultAnchor{height:1px;scroll-margin-top:82px}
+.focusNotice{padding:12px 14px;margin:15px 0;border-radius:11px;background:#eaf3ff;border:1px solid #bad2fa;color:#245baa;font-size:12px;line-height:1.5;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.focusNotice button{background:#fff;border:1px solid #aecbf5;color:#1765c5;border-radius:8px;font-size:12px;padding:9px 11px;font-weight:750;cursor:pointer}
+@media(max-width:650px){.focusNotice button{width:100%}.resultAnchor{scroll-margin-top:72px}}
