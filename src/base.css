@@ -46,3 +46,15 @@
 .dark {}
 
 *{box-sizing:border-box}body{margin:0;font-family:var(--font-family-base);}
+
+
+/* iOS Safari: evita zoom automático ao focar campos menores que 16px.
+   Não desativa o zoom manual nem interfere nos tamanhos de texto do restante do app. */
+@media (max-width: 1000px), (pointer: coarse) {
+  html { -webkit-text-size-adjust: 100%; }
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
