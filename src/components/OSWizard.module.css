@@ -92,3 +92,9 @@
  .catalogAddButton{height:39px}
  .comboMenu{max-height:218px}
 }
+
+/* Lista completa de modelos e marcas, com rolagem independente. */
+.comboMenu{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+.comboMenu button{flex-shrink:0}
+.body{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.backdrop{overscroll-behavior:none}
