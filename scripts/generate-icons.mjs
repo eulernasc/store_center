@@ -22,3 +22,7 @@ await icon("icon-sc-192-v3.png",192,0.92);
 await icon("icon-sc-512-v3.png",512,0.92);
 await icon("icon-sc-maskable-512-v3.png",512,0.72);
 await icon("apple-touch-icon-sc-v3.png",180,0.91);
+
+const socialSvg=await readFile(resolve(root,"scripts/preview-social.svg"));
+await sharp(socialSvg,{density:120}).resize(1200,630,{fit:"fill"}).flatten({background:"#06142e"}).jpeg({quality:89,mozjpeg:true}).toFile(resolve(publicDir,"og-store-center-v4.jpg"));
+console.log("WhatsApp preview: og-store-center-v4.jpg (1200x630)");
